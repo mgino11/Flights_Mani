@@ -6,11 +6,11 @@
 You’re encouraged to use a “wide” structure similar to how the information appears above, so
 that you can practice tidying and transformations as described below.
 
-		Los Angeles	Phoenix	San Diego	San Francisco	Seattle
-	ALASKA	on time	 497	221	212	503	1841
-	ALASKA	delayed	62	12	20	102	305
-	AM WEST	on time	694	4840	383	320	201
-	AM WEST	delayed	117	415	65	129	61
+			Los Angeles	Phoenix		San Diego	San Francisco	Seattle
+	ALASKA	on time	 	497	221			212		503	1841
+	ALASKA	delayed		62	12			20		102	305
+	AM WEST	on time		694	4840			383		320	201
+	AM WEST	delayed		117	415			65		129	61
 
 -(2) Read the information from your .CSV file into R, and use tidyr and dplyr as needed to tidy
 and transform your data.
