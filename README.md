@@ -25,12 +25,8 @@ homework submission:
 
 - library(tidytext)
 - library(tidyverse)
-
 - library(ggplot2)
-
-library(dplyr)
-
-library(plotly)
-
-library(stringr)
+- library(dplyr)
+- library(plotly)
+- library(stringr)
 
