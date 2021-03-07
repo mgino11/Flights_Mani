@@ -1,4 +1,4 @@
-# Flights_Manipulation 
+# Tidy Data with Tidyr
 ## Tidying and Transforming Data
 ![Example](https://user-images.githubusercontent.com/76123653/110219335-8a8dc480-7e8c-11eb-86cf-8781f4c8974a.PNG)
 
