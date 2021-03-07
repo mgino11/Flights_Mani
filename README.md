@@ -24,14 +24,9 @@ homework submission:
 #Packages used
 
 library(tidytext)
-
 library(tidyverse)
-
 library(ggplot2)
-
 library(dplyr)
-
 library(plotly)
-
 library(stringr)
 
