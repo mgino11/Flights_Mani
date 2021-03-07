@@ -21,5 +21,11 @@ and transform your data.
 descriptions of your data cleanup work, analysis, and conclusions. Please include in your
 homework submission:
 
- The URL to the .Rmd file in your GitHub repository. and
- The URL for your rpubs.com web page.
+#Packages used
+
+library(tidytext)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(stringr)
