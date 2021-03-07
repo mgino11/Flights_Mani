@@ -1,0 +1,162 @@
+---
+title: "Tidiying and Transforming Data"
+author: "MGinorio"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Tidying Tables
+
+## Challenge{.tabset .tabset-pills}
+
+### Overview 
+
+ **Challenge**
+
+**The chart above describes arrival delays for two airlines across five destinations. Your task is to:**
+
+![](images/Example.PNG)
+
+(1) Create a .CSV file (or optionally, a MySQL database!) that includes all of the information above. You’re encouraged to use a “wide” structure similar to how the information appears above, so that you can practice tidying and transformations as described below.
+(2) Read the information from your .CSV file into R, and use tidyr and dplyr as needed to tidy and transform your data.
+(3) Perform analysis to compare the arrival delays for the two airlines.
+(4) Your code should be in an R Markdown file, posted to rpubs.com, and should include narrative descriptions of your data cleanup work, analysis, and conclusions. Please include in your homework submission:
+
+- The URL to the .Rmd file in your GitHub repository. and
+- The URL for your rpubs.com web page.
+
+
+
+
+### Packages
+
+```{r load-packages, message=FALSE, warning=FALSE}
+
+#Packages used
+
+library(tidytext)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(stringr)
+
+```
+
+### Dataset 
+#### {.tabset}
+##### Flights
+
+Notice that because we used read_csv(), the data frame we received now prints nicely without having to use the head() function and does not clutter your screen.
+
+```{r}
+
+flights <-read.csv("https://raw.githubusercontent.com/mgino11/Flights_Mani/main/HW_5_flights.csv",stringsAsFactors = FALSE)
+
+glimpse(flights)
+
+```
+
+We need to get rid of spaces in "on time" so we can later manipulate data
+
+```{r}
+flights[,2] <- sapply(flights[,2], str_replace, " ", "_")
+flights
+```
+
+#### {-}
+
+### Manipulate
+
+**Clean data**
+Add the header Airline and Arrival Status to column 1 and 2.
+Pivot Longer for Arrival City 
+
+
+```{r, message=FALSE}
+flights_pivot_1 <-flights %>%
+  rename(airline = X, arrival.status = X.1) %>%
+   pivot_longer(flights,
+    cols = c(Los.Angeles, Phoenix, San.Diego, San.Francisco, Seattle),
+    names_to = "Arrival_City",
+    values_to = "Flight"
+    )
+
+flights_pivot_1
+```
+
+**Pivot Wider**
+I want to know the airline the Arrival City and what flight is on time or delayed
+
+```{r}
+flights_pivot_1 <- flights_pivot_1 %>%
+  pivot_wider(names_from = arrival.status, 
+              values_from = Flight)
+
+flights_pivot_1
+
+```
+
+
+#### Transform
+**I want to know the total  number of flights and the average delay**
+```{r}
+flights_pivot_1 <- flights_pivot_1 %>%
+  mutate(total_flights = on_time + delayed, 
+         delayed_avg =   round((delayed/total_flights)*100,2)) %>%
+  arrange(desc(delayed_avg))
+
+flights_pivot_1
+
+```
+
+### Graphs
+##### {.tabset}
+#### Delayed Avg by Airline
+
+I want to interpret graphically the frequency of delayed flights by airline
+
+```{r}
+ggplot(flights_pivot_1, aes(x = airline, y = delayed_avg,)) + 
+  geom_boxplot() + geom_point() + ggtitle("Delayed Rate by Airline")
+
+```
+
+
+#### Delayed Avg by City
+
+I want to interpret graphically the frequency of delayed flights by City
+
+```{r}
+ggplot(flights_pivot_1, aes(x = Arrival_City, y = delayed_avg)) + 
+  geom_boxplot() + geom_point() + ggtitle("Delayed Rate by City")
+
+```
+
+##### {-}
+
+### Conclusion
+#### Delays By Airline
+Thanks to the data Wrangling we were able to determine that AM West has more delays compared to Alaska Airlines
+
+```{r}
+ggplot(flights_pivot_1, aes(x = airline, y = delayed_avg,)) + 
+  geom_boxplot() + geom_point() + ggtitle("Delayed Rate by Airline")
+```
+
+
+#### Delays By city
+
+Thanks to the data wrangling I was able to determine that SFO and SEATTLE are the two cities with the most delays on average for the two airlines considered in this data Set.
+
+```{r}
+ggplot(flights_pivot_1, aes(x = Arrival_City, y = delayed_avg)) + 
+  geom_boxplot() + geom_point() + ggtitle("Delayed Rate by City")
+```
+
+
+
+
+
+
